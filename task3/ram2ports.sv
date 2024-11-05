@@ -1,5 +1,5 @@
 module ram2ports  #(
-    parameter ADDRESS_WIDTH = 8
+    parameter ADDRESS_WIDTH = 8,
               DATA_WIDTH = 8
 )(
     input logic     clk,
@@ -8,7 +8,7 @@ module ram2ports  #(
     input logic [ADDRESS_WIDTH-1:0] wr_addr,
     input logic [ADDRESS_WIDTH-1:0] rd_addr,
     input logic [DATA_WIDTH-1:0] din,
-    input logic [DATA_WIDTH-1:0] dout
+    output logic [DATA_WIDTH-1:0] dout
 );
 
 logic [DATA_WIDTH-1:0] ram_array [2**ADDRESS_WIDTH-1:0];
