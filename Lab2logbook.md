@@ -39,6 +39,23 @@ Within my counter module, I have an 8 bit input *incr*, with which I set the val
 
 ## Task 2 - Sine and Cosine Dual wave generation
 #### Making a dual-port ROM
-
+My implementation of the dual-port ROM requires one address input. The reason I have made this choice is seen later.
+```
+input logic [ADDRESS_WIDTH-1:0] addr,
+output logic [DATA_WIDTH-1:0] dout1,
+output logic [DATA_WIDTH-1:0] dout2
+```
+It can be seen that there are two outputs, both of which are displayed and seen on the Vbuddy screen at the same time. It may seem that the plot is the same - but it is just defined over all 8-bit values 0 to 255 (see quantization in Signals and Systems).
+```
+vbdPlot(int (top->dout1), 0, 255);
+vbdPlot(int (top->dout2), 0, 255);
+```
 #### Making the phase difference 90deg
+My choice to only include one address was to implement this phase difference easier. Setting this with two inputs to *addr1* and *addr2* would require the person writing the testbench to have make a conscious choice to calculate this offset manually. I use the rotary encoder as an input for the offset in the testbench - `top->incr = vbdValue();`.
+```
+dout1 <= rom_array [addr];
+dout2 <= rom_array [addr + incr];
+```
+It can be seen that the second output is the first signal with a shift of *incr*.
+
 ## Task 3 - Capture and display audio signal in RAM
