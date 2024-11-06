@@ -4,6 +4,7 @@ module rom #(
 )(
     input logic clk,
     input logic [ADDRESS_WIDTH-1:0] addr,
+    input logic [DATA_WIDTH-1:0] incr,
     output logic [DATA_WIDTH-1:0] dout1,
     output logic [DATA_WIDTH-1:0] dout2
 );
@@ -19,6 +20,6 @@ always_ff @(posedge clk)
     // output is synchronous
     begin
         dout1 <= rom_array [addr];
-        dout2 <= rom_array [addr + 7'd64];
+        dout2 <= rom_array [addr + incr];
     end
 endmodule
