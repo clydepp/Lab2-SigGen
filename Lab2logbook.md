@@ -35,7 +35,10 @@ The code above shows that **sinegen.sv** uses instances of **rom.sv** and **coun
 The name within the brackets, i.e. `(address)` is the external signal name - which is usually interconnect wires or interface signals from this 'main' file.
 
 ### TEST YOURSELF CHALLENGE
-Within my counter module, I have an 8 bit input *incr*, with which I set the value of in the testbench using `top->incr = vbdValue();`.
+Within my counter module, I have an 8 bit input *incr*, with which I set the value of in the testbench using `top->incr = vbdValue();`. This changes the frequency of the sinusoid, such to a point that the signal frequency is so low that points from old wave cycles seem to overlap - causing a plot which looks like a set of scattered points. I altered this by adding a scale factor to the increment - so that the rotary encoder has a weaker (and more controllable) impact on the plot. I chose a scale factor of $\frac{1}{10}$, which meant that when v = 10 (on the Vbuddy), the wave would start oscillating - with a frequency of 1unit.
+```
+else if (en) count <= count + {incr/10};
+```
 
 ## Task 2 - Sine and Cosine Dual wave generation
 #### Making a dual-port ROM
@@ -51,11 +54,23 @@ vbdPlot(int (top->dout1), 0, 255);
 vbdPlot(int (top->dout2), 0, 255);
 ```
 #### Making the phase difference 90deg
-My choice to only include one address was to implement this phase difference easier. Setting this with two inputs to *addr1* and *addr2* would require the person writing the testbench to have make a conscious choice to calculate this offset manually. I use the rotary encoder as an input for the offset in the testbench - `top->incr = vbdValue();`.
+My choice to only include one address was to implement this phase difference easier. A change I made was adding another output *dout2*, which would be the second sinusoid - and the shifted version of the original signal. Setting this with two inputs to *addr1* and *addr2* would require the person writing the testbench to have make a conscious choice to calculate this offset manually.
 ```
 dout1 <= rom_array [addr];
-dout2 <= rom_array [addr + incr];
+dout2 <= rom_array [addr + 7'd64];
 ```
-It can be seen that the second output is the first signal with a shift of *incr*.
+It can be seen that the second output is the first signal with a shift of 64 bits. This is shown with the code above and the image of the plot below:
+<p align = "center"><img src="https://github.com/user-attachments/assets/32c4a032-6361-4b5a-b426-8d7cbfe464d0" width=20% height=20%></p>
+
+Now, change the phase: use the rotary encoder as an input for the offset in the testbench - `top->incr = vbdValue();`. In order to use the rotary encoder, the frequency of the sinusoids must be fixed - increments of `2'd3` gives a stable signal. 
+
+Multiplying the increment by 2 allows the two signals to be in antiphase. Without this, the phase difference is limited to a phase difference of 140deg. 
+```
+dout2 <= rom_array [addr + incr*{2'd2}];
+```
+By inspection, the original waveform does not change, but the copy changes in phase when the rotary encoder value is changed. This can be seen below:
+<p align = "center"><img src="https://github.com/user-attachments/assets/b477aa78-27f1-4e98-b91c-26d4aa01d28e" width=20% height=20%></p>
+
 
 ## Task 3 - Capture and display audio signal in RAM
+
