@@ -73,4 +73,23 @@ By inspection, the original waveform does not change, but the copy changes in ph
 
 
 ## Task 3 - Capture and display audio signal in RAM
+The testbench is already written, and uses functions to sample the audio signal.
+```
+// intialize variables for analogue output
+vbdInitMicIn(RAM_SZ);
+  
+// ask Vbuddy to return the next audio sample
+top->mic_signal = vbdMicValue();
+```
 
+The first function, ***vbdInitMicIn(RAM_SZ)*** uses the predefined value *RAM_SZ* (the number of addresses in RAM) to find a suitable size of sampling. In the case of the 512 x 8 RAM module, the mic will record 512 values and store them in a buffer.
+
+The next function, ***vbdMicValue()***, records the amplitudes of the signal as captured by the mic. This sets the input for the RAM module, the values that are written and read from.
+
+The setup of the *sigdelay.sv* file is as follows:
+![image](https://github.com/user-attachments/assets/928681b5-3bdf-4c90-95f3-986fb0ff38fd)
+* The output from counter is used as the address for the RAM
+* The read address is the address of the write values minus an offset
+* The offset is set by the rotary encoder using `vbdValue()`
+* The output of the RAM is the shifted value
+* The values in the addresses are the values in the buffer of the write input from `vbdMicValue()`
