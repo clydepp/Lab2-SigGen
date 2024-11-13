@@ -18,13 +18,14 @@ VL_INLINE_OPT void Vsinegen___024root___sequent__TOP__0(Vsinegen___024root* vlSe
     __Vdly__sinegen__DOT____Vcellout__addrCounter__count 
         = ((IData)(vlSelf->rst) ? 0U : (0xffU & ((IData)(vlSelf->en)
                                                   ? 
-                                                 ((IData)(vlSelf->sinegen__DOT____Vcellout__addrCounter__count) 
-                                                  + (IData)(vlSelf->incr))
+                                                 ((IData)(3U) 
+                                                  + (IData)(vlSelf->sinegen__DOT____Vcellout__addrCounter__count))
                                                   : (IData)(vlSelf->sinegen__DOT____Vcellout__addrCounter__count))));
-    vlSelf->dout2 = vlSelf->sinegen__DOT__sineRom__DOT__rom_array
-        [(0xffU & ((IData)(0x40U) + (IData)(vlSelf->sinegen__DOT____Vcellout__addrCounter__count)))];
     vlSelf->dout1 = vlSelf->sinegen__DOT__sineRom__DOT__rom_array
         [vlSelf->sinegen__DOT____Vcellout__addrCounter__count];
+    vlSelf->dout2 = vlSelf->sinegen__DOT__sineRom__DOT__rom_array
+        [(0xffU & ((IData)(vlSelf->sinegen__DOT____Vcellout__addrCounter__count) 
+                   + ((IData)(vlSelf->incr) << 1U)))];
     vlSelf->sinegen__DOT____Vcellout__addrCounter__count 
         = __Vdly__sinegen__DOT____Vcellout__addrCounter__count;
 }

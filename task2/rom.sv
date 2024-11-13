@@ -20,6 +20,6 @@ always_ff @(posedge clk)
     // output is synchronous
     begin
         dout1 <= rom_array [addr];
-        dout2 <= rom_array [addr + incr];
+        dout2 <= rom_array [addr + incr*{2'd2}];
     end
 endmodule

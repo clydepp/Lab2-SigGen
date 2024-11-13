@@ -16,13 +16,13 @@ counter addrCounter (
     .clk (clk),
     .rst (rst),
     .en (en),
-    .incr (incr),
     .count (address)
 );
 
 rom sineRom (
     .clk (clk),
     .addr (address),
+    .incr (incr),
     .dout1 (dout1),
     .dout2 (dout2)
 );

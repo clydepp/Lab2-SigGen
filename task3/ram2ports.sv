@@ -14,9 +14,9 @@ module ram2ports  #(
 logic [DATA_WIDTH-1:0] ram_array [2**ADDRESS_WIDTH-1:0];
 
 always_ff @(posedge clk) begin
-    if (wr_en == 1'b1)
+    if (wr_en)
         ram_array[wr_addr] <= din;
-    if (rd_en == 1'b1)
+    if (rd_en)
         // output is synchronous
         dout <= ram_array [rd_addr];
 end
